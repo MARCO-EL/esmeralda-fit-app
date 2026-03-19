@@ -5,6 +5,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Treinos from "./pages/Treinos";
+import Nutricao from "./pages/Nutricao";
+import Guia from "./pages/Guia";
+import Desafio from "./pages/Desafio";
 import NotFound from "./pages/NotFound";
 import InstallPrompt from "./components/InstallPrompt";
 
@@ -20,6 +24,10 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/treinos" element={<Treinos />} />
+          <Route path="/nutricao" element={<Nutricao />} />
+          <Route path="/guia" element={<Guia />} />
+          <Route path="/desafio" element={<Desafio />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
