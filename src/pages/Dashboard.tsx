@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Dumbbell, Apple, Trophy, BookOpen, LogOut } from "lucide-react";
+import { Dumbbell, Apple, Trophy, BookOpen, LogOut, Mail, ExternalLink } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 
 const sections = [
   { icon: Dumbbell, title: "Treinos", desc: "Planos personalizados", color: "text-primary", path: "/treinos" },
-  { icon: Apple, title: "Nutrição", desc: "Dietas e receitas", color: "text-secondary", path: "/nutricao" },
+  { icon: Apple, title: "Nutrição", desc: "Receitas low carb", color: "text-secondary", path: "/nutricao" },
   { icon: Trophy, title: "Desafio", desc: "Metas semanais", color: "text-primary", path: "/desafio" },
   { icon: BookOpen, title: "Guia", desc: "Artigos e dicas", color: "text-secondary", path: "/guia" },
+  { icon: Mail, title: "Contato & E-book", desc: "Adquira o guia completo", color: "text-primary", path: "/contato" },
 ];
 
 const Dashboard = () => {
@@ -44,6 +45,25 @@ const Dashboard = () => {
       <div className="px-6 pb-6">
         <h2 className="text-2xl font-bold uppercase text-foreground">Sua Jornada<br />Começa Aqui</h2>
         <p className="mt-2 text-sm text-muted-foreground">Olá, {user.split("@")[0]}! Explore seu conteúdo.</p>
+      </div>
+
+      {/* E-book highlight */}
+      <div className="mx-6 mb-4 rounded-xl border border-primary/30 bg-primary/10 p-4">
+        <div className="flex items-center gap-3">
+          <ExternalLink className="h-6 w-6 text-primary shrink-0" />
+          <div className="flex-1">
+            <p className="text-sm font-bold text-foreground">E-book Fitness Completo</p>
+            <p className="text-[10px] text-muted-foreground">22 capítulos • Treinos + Nutrição + Desafios</p>
+          </div>
+          <a
+            href="https://pay.kiwify.com.br/XZ6DhAB"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full bg-primary px-3 py-1.5 text-[10px] font-bold text-primary-foreground"
+          >
+            VER
+          </a>
+        </div>
       </div>
 
       <div className="flex flex-col gap-3 px-6">

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dumbbell, Play, X } from "lucide-react";
+import { Dumbbell, Play, X, Clock, Flame } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
 
 const treinos = [
@@ -37,6 +37,27 @@ const treinos = [
     calories: "80 kcal",
     description: "Sessão de alongamento para flexibilidade e recuperação muscular.",
     videoId: "g_tea8ZNk5A",
+  },
+  {
+    title: "Treino Full Body",
+    duration: "35min",
+    calories: "400 kcal",
+    description: "Treino completo trabalhando todos os grupos musculares.",
+    videoId: "UBMk30rjy0o",
+  },
+  {
+    title: "Abdominais e Core",
+    duration: "15min",
+    calories: "150 kcal",
+    description: "Fortalecimento do core e definição abdominal.",
+    videoId: "1919eTCoESo",
+  },
+  {
+    title: "Yoga para Iniciantes",
+    duration: "20min",
+    calories: "120 kcal",
+    description: "Sessão de yoga focada em equilíbrio, respiração e flexibilidade.",
+    videoId: "v7AYKMP6rOE",
   },
 ];
 
@@ -78,7 +99,10 @@ const Treinos = () => {
               </div>
               <div className="flex-1">
                 <p className="font-semibold text-foreground">{t.title}</p>
-                <p className="text-xs text-muted-foreground">{t.duration} | {t.calories}</p>
+                <div className="mt-0.5 flex items-center gap-3 text-[10px] text-muted-foreground">
+                  <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {t.duration}</span>
+                  <span className="flex items-center gap-1"><Flame className="h-3 w-3" /> {t.calories}</span>
+                </div>
               </div>
             </div>
             <p className="mt-2 text-xs text-muted-foreground">{t.description}</p>
