@@ -9,6 +9,7 @@ import Treinos from "./pages/Treinos";
 import Nutricao from "./pages/Nutricao";
 import Guia from "./pages/Guia";
 import Desafio from "./pages/Desafio";
+import Contato from "./pages/Contato";
 import NotFound from "./pages/NotFound";
 import InstallPrompt from "./components/InstallPrompt";
 
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/nutricao" element={<Nutricao />} />
           <Route path="/guia" element={<Guia />} />
           <Route path="/desafio" element={<Desafio />} />
+          <Route path="/contato" element={<Contato />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
