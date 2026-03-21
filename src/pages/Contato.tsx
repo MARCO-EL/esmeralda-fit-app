@@ -45,17 +45,19 @@ const Contato = () => {
         </a>
 
         {/* Contact */}
-        <div className="rounded-xl border border-border bg-card p-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-muted text-secondary">
-              <Mail className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="font-semibold text-foreground text-sm">Contato</p>
-              <p className="text-xs text-muted-foreground">Dúvidas ou sugestões? Entre em contato.</p>
-            </div>
+        <a
+          href="mailto:samedd745@gmail.com"
+          className="flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition hover:border-primary/30"
+        >
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-muted text-secondary">
+            <Mail className="h-5 w-5" />
           </div>
-        </div>
+          <div className="flex-1">
+            <p className="font-semibold text-foreground text-sm">Contato</p>
+            <p className="text-xs text-muted-foreground">samedd745@gmail.com</p>
+          </div>
+          <span className="text-muted-foreground">›</span>
+        </a>
       </div>
 
       <BottomNav active="Contato" />
