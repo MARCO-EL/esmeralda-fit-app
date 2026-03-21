@@ -15,7 +15,7 @@ const treinos = [
     duration: "25min",
     calories: "280 kcal",
     description: "Cardio de intensidade moderada para resistência e saúde cardiovascular.",
-    videoId: "VWj9h4v-XBE",
+    videoId: "3LKZQ1a7Msw",
   },
   {
     title: "Treino de Força - Superior",
