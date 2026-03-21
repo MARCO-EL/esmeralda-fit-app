@@ -62,6 +62,9 @@
   }
 }
 
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
 /* Hide Lovable branding */
 a[href*="lovable.dev"],
 iframe[src*="lovable.dev"],
