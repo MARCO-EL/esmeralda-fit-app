@@ -1,119 +1,230 @@
 import { useState } from "react";
-import { Dumbbell, Play, X, Clock, Flame } from "lucide-react";
+import { Dumbbell, Clock, Flame, ChevronDown, ChevronUp, Target, TrendingUp, TrendingDown, Wrench, AlertTriangle, Calendar } from "lucide-react";
 import BottomNav from "@/components/BottomNav";
+import { treinos, planosSemana, type Treino } from "@/data/treinos";
 
-const treinos = [
-  {
-    title: "HIIT Queima Total",
-    duration: "20min",
-    calories: "350 kcal",
-    description: "Treino intervalado de alta intensidade para queima máxima de gordura.",
-    videoId: "ml6cT4AZdqI",
-  },
-  {
-    title: "Cardio Moderado",
-    duration: "25min",
-    calories: "280 kcal",
-    description: "Cardio de intensidade moderada para resistência e saúde cardiovascular.",
-    videoId: "3LKZQ1a7Msw",
-  },
-  {
-    title: "Treino de Força - Superior",
-    duration: "30min",
-    calories: "300 kcal",
-    description: "Fortalecimento de peito, ombros, costas e braços.",
-    videoId: "ixkQaZXVQjs",
-  },
-  {
-    title: "Treino de Força - Inferior",
-    duration: "30min",
-    calories: "320 kcal",
-    description: "Fortalecimento de glúteos, quadríceps e panturrilha.",
-    videoId: "UItWltVZZmE",
-  },
-  {
-    title: "Alongamento e Mobilidade",
-    duration: "15min",
-    calories: "80 kcal",
-    description: "Sessão de alongamento para flexibilidade e recuperação muscular.",
-    videoId: "g_tea8ZNk5A",
-  },
-  {
-    title: "Treino Full Body",
-    duration: "35min",
-    calories: "400 kcal",
-    description: "Treino completo trabalhando todos os grupos musculares.",
-    videoId: "UBMk30rjy0o",
-  },
-  {
-    title: "Abdominais e Core",
-    duration: "15min",
-    calories: "150 kcal",
-    description: "Fortalecimento do core e definição abdominal.",
-    videoId: "1919eTCoESo",
-  },
-  {
-    title: "Yoga para Iniciantes",
-    duration: "20min",
-    calories: "120 kcal",
-    description: "Sessão de yoga focada em equilíbrio, respiração e flexibilidade.",
-    videoId: "v7AYKMP6rOE",
-  },
+const objetivoLabels: Record<string, string> = {
+  emagrecimento: "Emagrecimento",
+  condicionamento: "Condicionamento",
+  hipertrofia: "Hipertrofia",
+  força: "Força",
+  mobilidade: "Mobilidade",
+  preparação: "Preparação",
+};
+
+const nivelColors: Record<string, string> = {
+  iniciante: "bg-secondary/20 text-secondary",
+  intermediário: "bg-accent/20 text-accent",
+  avançado: "bg-destructive/20 text-destructive",
+  todos: "bg-primary/20 text-primary",
+};
+
+const categorias = [
+  { key: "todos", label: "Todos" },
+  { key: "emagrecimento", label: "Emagrecer" },
+  { key: "hiit", label: "HIIT" },
+  { key: "hipertrofia", label: "Hipertrofia" },
+  { key: "força", label: "Força" },
+  { key: "mobilidade", label: "Mobilidade" },
+  { key: "aquecimento", label: "Aquecimento" },
 ];
 
+const TreinoCard = ({ treino }: { treino: Treino }) => {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="rounded-xl border border-border bg-card overflow-hidden">
+      <button onClick={() => setExpanded(!expanded)} className="w-full p-4 text-left">
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-muted text-primary">
+            <Dumbbell className="h-5 w-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-semibold text-foreground text-sm leading-tight">{treino.titulo}</p>
+            <div className="mt-1 flex flex-wrap items-center gap-2">
+              <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                <Clock className="h-3 w-3" /> {treino.duracaoMin}min
+              </span>
+              <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                <Flame className="h-3 w-3" /> 🔥 {treino.kcalEstimadas} kcal
+              </span>
+              <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase ${nivelColors[treino.nivel] || nivelColors.todos}`}>
+                {treino.nivel}
+              </span>
+            </div>
+          </div>
+          {expanded ? <ChevronUp className="h-4 w-4 text-muted-foreground shrink-0" /> : <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />}
+        </div>
+      </button>
+
+      {expanded && (
+        <div className="border-t border-border px-4 pb-4 pt-3 space-y-4">
+          {/* Objetivo e Equipamentos */}
+          <div className="flex flex-wrap gap-2">
+            <span className="flex items-center gap-1 rounded-full bg-primary/15 px-2.5 py-1 text-[10px] font-semibold text-primary">
+              <Target className="h-3 w-3" /> {objetivoLabels[treino.objetivo] || treino.objetivo}
+            </span>
+            {treino.equipamentos.map((eq) => (
+              <span key={eq} className="flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-[10px] text-muted-foreground">
+                <Wrench className="h-3 w-3" /> {eq}
+              </span>
+            ))}
+          </div>
+
+          {/* Aquecimento */}
+          {treino.aquecimento.length > 0 && (
+            <div>
+              <p className="text-[11px] font-bold uppercase text-primary mb-1">🔥 Aquecimento</p>
+              {treino.aquecimento.map((a, i) => (
+                <p key={i} className="text-xs text-muted-foreground">• {a}</p>
+              ))}
+            </div>
+          )}
+
+          {/* Bloco de exercícios */}
+          {treino.bloco.length > 0 && (
+            <div>
+              <p className="text-[11px] font-bold uppercase text-primary mb-2">💪 Exercícios</p>
+              <div className="space-y-2">
+                {treino.bloco.map((ex, i) => (
+                  <div key={i} className="rounded-lg bg-muted/50 p-3">
+                    <p className="text-xs font-semibold text-foreground">{ex.descricao}</p>
+                    <div className="mt-1 flex flex-wrap gap-3 text-[10px] text-muted-foreground">
+                      <span>⏱ {ex.tempoReps}</span>
+                      <span>📊 {ex.series} séries</span>
+                      <span>⏸ Descanso: {ex.descanso}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Descanso geral */}
+          {treino.descanso !== "—" && (
+            <p className="text-xs text-muted-foreground">⏸ <span className="font-semibold">Descanso entre blocos:</span> {treino.descanso}</p>
+          )}
+
+          {/* Técnica */}
+          {treino.tecnica.length > 0 && (
+            <div>
+              <p className="text-[11px] font-bold uppercase text-primary mb-1">📝 Dicas de Técnica</p>
+              {treino.tecnica.map((t, i) => (
+                <p key={i} className="text-xs text-muted-foreground">✔ {t}</p>
+              ))}
+            </div>
+          )}
+
+          {/* Regressão e Progressão */}
+          <div className="grid grid-cols-2 gap-3">
+            {treino.regressao.length > 0 && (
+              <div>
+                <p className="flex items-center gap-1 text-[11px] font-bold uppercase text-accent mb-1">
+                  <TrendingDown className="h-3 w-3" /> Mais fácil
+                </p>
+                {treino.regressao.map((r, i) => (
+                  <p key={i} className="text-[10px] text-muted-foreground">• {r}</p>
+                ))}
+              </div>
+            )}
+            {treino.progressao.length > 0 && (
+              <div>
+                <p className="flex items-center gap-1 text-[11px] font-bold uppercase text-secondary mb-1">
+                  <TrendingUp className="h-3 w-3" /> Mais difícil
+                </p>
+                {treino.progressao.map((p, i) => (
+                  <p key={i} className="text-[10px] text-muted-foreground">• {p}</p>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Observações */}
+          {treino.observacoes && (
+            <div className="flex items-start gap-2 rounded-lg bg-destructive/10 p-3">
+              <AlertTriangle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />
+              <p className="text-[11px] text-destructive">{treino.observacoes}</p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Treinos = () => {
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [catAtiva, setCatAtiva] = useState("todos");
+  const [planoAberto, setPlanoAberto] = useState<string | null>(null);
+
+  const treinosFiltrados = catAtiva === "todos" ? treinos : treinos.filter((t) => t.categoria === catAtiva);
 
   return (
     <div className="flex min-h-screen flex-col bg-background pb-24">
       <div className="px-6 pt-10 pb-4">
         <h1 className="text-2xl font-bold uppercase text-primary">Treinos</h1>
-        <p className="text-sm text-muted-foreground">Escolha seu treino e comece agora!</p>
+        <p className="text-sm text-muted-foreground">Rotinas completas sem vídeos — 100% descritivas</p>
       </div>
 
-      {activeVideo && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 p-4">
-          <div className="w-full max-w-lg">
-            <button onClick={() => setActiveVideo(null)} className="mb-3 flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-              <X className="h-4 w-4" /> Fechar
-            </button>
-            <div className="aspect-video w-full overflow-hidden rounded-xl">
-              <iframe
-                src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1`}
-                title="Treino"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="h-full w-full"
-              />
-            </div>
-          </div>
-        </div>
-      )}
-
-      <div className="flex flex-col gap-3 px-6">
-        {treinos.map((t) => (
-          <div key={t.title} className="rounded-xl border border-border bg-card p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-muted text-primary">
-                <Dumbbell className="h-5 w-5" />
-              </div>
-              <div className="flex-1">
-                <p className="font-semibold text-foreground">{t.title}</p>
-                <div className="mt-0.5 flex items-center gap-3 text-[10px] text-muted-foreground">
-                  <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {t.duration}</span>
-                  <span className="flex items-center gap-1"><Flame className="h-3 w-3" /> {t.calories}</span>
-                </div>
-              </div>
-            </div>
-            <p className="mt-2 text-xs text-muted-foreground">{t.description}</p>
-            <button
-              onClick={() => setActiveVideo(t.videoId)}
-              className="mt-3 flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:bg-accent"
-            >
-              <Play className="h-4 w-4" /> Assistir
-            </button>
-          </div>
+      {/* Filtros */}
+      <div className="flex gap-2 overflow-x-auto px-6 pb-4 no-scrollbar">
+        {categorias.map((c) => (
+          <button
+            key={c.key}
+            onClick={() => setCatAtiva(c.key)}
+            className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+              catAtiva === c.key ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+            }`}
+          >
+            {c.label}
+          </button>
         ))}
+      </div>
+
+      {/* Planos semanais */}
+      <div className="px-6 pb-4">
+        <p className="flex items-center gap-2 text-[11px] font-bold uppercase text-primary mb-2">
+          <Calendar className="h-4 w-4" /> Planos Semanais por Nível
+        </p>
+        <div className="flex gap-2">
+          {planosSemana.map((p) => (
+            <button
+              key={p.id}
+              onClick={() => setPlanoAberto(planoAberto === p.id ? null : p.id)}
+              className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+                planoAberto === p.id ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+              }`}
+            >
+              {p.nivel}
+            </button>
+          ))}
+        </div>
+
+        {planoAberto && (() => {
+          const plano = planosSemana.find((p) => p.id === planoAberto);
+          if (!plano) return null;
+          return (
+            <div className="mt-3 rounded-xl border border-border bg-card p-4 space-y-2">
+              <p className="text-sm font-bold text-foreground">Plano {plano.nivel}</p>
+              {plano.dias.map((d) => (
+                <div key={d.dia} className="flex items-center gap-3 rounded-lg bg-muted/50 px-3 py-2">
+                  <span className="text-xs font-bold text-primary w-16 shrink-0">{d.dia.slice(0, 3)}</span>
+                  <span className="text-xs text-foreground flex-1">{d.foco}</span>
+                  <span className="text-[10px] text-muted-foreground">{d.observacoes}</span>
+                </div>
+              ))}
+            </div>
+          );
+        })()}
+      </div>
+
+      {/* Lista de treinos */}
+      <div className="flex flex-col gap-3 px-6">
+        {treinosFiltrados.map((t) => (
+          <TreinoCard key={t.id} treino={t} />
+        ))}
+        {treinosFiltrados.length === 0 && (
+          <p className="text-center text-sm text-muted-foreground py-8">Nenhum treino nesta categoria.</p>
+        )}
       </div>
 
       <BottomNav active="Treinos" />
