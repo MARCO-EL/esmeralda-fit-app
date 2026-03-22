@@ -119,7 +119,7 @@ const TreinoCard = ({ treino }: { treino: Treino }) => {
           <div className="grid grid-cols-2 gap-3">
             {treino.regressao.length > 0 && (
               <div>
-                <p className="flex items-center gap-1 text-[11px] font-bold uppercase text-yellow-400 mb-1">
+                <p className="flex items-center gap-1 text-[11px] font-bold uppercase text-accent mb-1">
                   <TrendingDown className="h-3 w-3" /> Mais fácil
                 </p>
                 {treino.regressao.map((r, i) => (
