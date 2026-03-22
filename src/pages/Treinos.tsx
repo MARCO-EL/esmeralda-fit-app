@@ -129,7 +129,7 @@ const TreinoCard = ({ treino }: { treino: Treino }) => {
             )}
             {treino.progressao.length > 0 && (
               <div>
-                <p className="flex items-center gap-1 text-[11px] font-bold uppercase text-green-400 mb-1">
+                <p className="flex items-center gap-1 text-[11px] font-bold uppercase text-secondary mb-1">
                   <TrendingUp className="h-3 w-3" /> Mais difícil
                 </p>
                 {treino.progressao.map((p, i) => (
