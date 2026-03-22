@@ -13,9 +13,9 @@ const objetivoLabels: Record<string, string> = {
 };
 
 const nivelColors: Record<string, string> = {
-  iniciante: "bg-green-900/40 text-green-400",
-  intermediário: "bg-yellow-900/40 text-yellow-400",
-  avançado: "bg-red-900/40 text-red-400",
+  iniciante: "bg-secondary/20 text-secondary",
+  intermediário: "bg-accent/20 text-accent",
+  avançado: "bg-destructive/20 text-destructive",
   todos: "bg-primary/20 text-primary",
 };
 
